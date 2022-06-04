@@ -1,52 +1,34 @@
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { useSelector} from 'react-redux';
-import PropTypes from 'prop-types';
-import { useFetchContactsQuery, useDeleteContactsMutation }  from '../../redux/contacts/contactsSlice';
-import s from './ContactList.module.css';
-
+import { Li, Ul, P } from './ContactList.styled';
+import Button from 'components/Button/Button';
+import ClipLoader from 'react-spinners/ClipLoader';
+import { useSelector } from 'react-redux';
+import { useGetContactsQuery } from 'redux/contacts/contactsSlice';
 
 const ContactList = () => {
-    const filter = (state) => state.contacts.filter;
-    const { data: contacts } = useFetchContactsQuery();
-    const [deleteContact] = useDeleteContactsMutation();
+  const { data, isLoading } = useGetContactsQuery();
 
-    const getFilter = useSelector(filter);
-    const getFilteredContacts = (contacts) =>
-        contacts?.filter((contact) =>
-        contact.name.toLowerCase().includes(getFilter.toLowerCase())
-        );
+  const filter = useSelector(state => state.filter);
 
-    const filterContacts = getFilteredContacts(contacts);
+  const visible = data?.filter(contact =>
+    contact.name.toLowerCase().includes(filter)
+  );
 
-    const delContact = (id) => {
-        deleteContact(id)
-        Notify.success(`This contact has been deleted from the Contacts Book!`)
-    }
-
-    return (
-        <>
-            {contacts && 
-            <ul className={s.list}>
-                {filterContacts && 
-                    filterContacts.map(({ id, name, phone }) => (
-                    <li className={s.item} key={id}>
-                        {name}:
-                        <span className={s.number}>{phone}</span>
-                        <button className={s.button} onClick={()=> delContact(id)} >Delete</button>
-                    </li>))}
-            </ul>
-  
-        }
-        </>
-        
-
-    );
-    
+  return (
+    <div>
+      {isLoading && <ClipLoader />}
+      {data && (
+        <Ul>
+          {visible.map(({ id, name, number }) => (
+            <Li key={id}>
+              <P>{name}:</P> <p>{number}</p>
+              <Button id={id} />
+            </Li>
+          ))}
+        </Ul>
+      )}
+      {visible?.length === 0 && <p>no contacts</p>}
+    </div>
+  );
 };
 
 export default ContactList;
-
-ContactList.propTypes = {
-    contacts: PropTypes.array,
-    onDeleteContact: PropTypes.func,
-};

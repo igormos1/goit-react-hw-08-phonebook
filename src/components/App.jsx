@@ -6,17 +6,18 @@ import { lazy, Suspense } from 'react';
 import Container from 'App.style';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import authOperations from './redux/auth/auth-operations';
-import PrivateRoute from './components/Routes/PrivateRoute'
-import PublicRoute from 'components/Routes/PublicRoute';
+import authOperations from 'redux/auth/auth-operations'
+// import PrivateRoute from './components/Routes/PrivateRoute'
+import PrivateRoute from './Routes/PrivateRoute'
+import PublicRoute from './Routes/PublicRoute';
 import AppBar from 'components/AppBar/AppBar';
 // import { HomeView } from 'views/homeView';
 
-const LogInView = lazy(()=> import('./views/logInView'));
-const RegisterView = lazy(()=> import('./views/registerfView'));
-const ContactsView = lazy(()=> import('./views/contactsView'));
-const HomeView = lazy(()=> import('./views/homeView'));
-const NotFoundView = lazy(()=> import('./views/notFoundView'))
+const LogInView = lazy(()=> import('views/logInView'));
+const RegisterView = lazy(()=> import('views/registerfView'));
+const ContactsView = lazy(()=> import('views/contactsView'));
+const HomeView = lazy(()=> import('views/homeView'));
+const NotFoundView = lazy(()=> import('views/notFoundView'))
 
 export const App = () => {
   const dispatch = useDispatch();
