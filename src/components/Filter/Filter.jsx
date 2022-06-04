@@ -1,35 +1,32 @@
-import React from "react";
+import { myFilter } from 'redux/contacts/filterSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import contactsAction from '../../redux/contacts/contacts-action';
-import PropTypes from 'prop-types';
-import s from './Filter.module.css';
-
-
+import TextField from '@mui/material/TextField';
 
 const Filter = () => {
-    const value = useSelector(state => state.contacts.filter);
-    const dispatch = useDispatch()
+  const filter = useSelector(state => state.filter);
+  const dispatch = useDispatch();
 
-    const onChange = (e) => dispatch(contactsAction.changeFilter(e.target.value))
+  const onFilter = e => {
+    dispatch(myFilter(e.currentTarget.value.trim().toLowerCase()));
+  };
 
-    return (
-        <div className={s.box}>
-            <label className={s.name}>
-                Find contacts by name
-                <input
-                    className={s.nameContact}
-                    type="text"
-                    value={value}
-                    onChange={onChange}
-                />
-            </label>
-        </div>
-    )
-}
-
-export default Filter
-
-Filter.propTypes = {
-    value: PropTypes.string,
-    onChange: PropTypes.func
+  return (
+    <div>
+      <TextField
+        label="Find contacts by name"
+        color="secondary"
+        type="text"
+        name="filter"
+        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+        required
+        value={filter}
+        onChange={onFilter}
+      />
+    </div>
+  );
 };
+
+
+
+export default Filter;
