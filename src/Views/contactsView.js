@@ -1,5 +1,4 @@
-//import ContactForm from 'components/Form/ContactsForm';
-import ContactForm from 'components/ContactForm/ContactForm';
+import ContactForm from 'components/Form/ContactsForm';
 import Filter from 'components/Filter/Filter';
 import ContactList from 'components/ContactList/ContactList';
 
